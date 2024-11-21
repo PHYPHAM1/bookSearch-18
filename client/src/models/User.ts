@@ -1,8 +1,9 @@
-import type { Book } from './Book';
-
-export interface User {
-  username: string | null;
-  email: string | null;
-  password: string | null;
-  savedBooks: Book[];
-}
+export default interface User {
+    _id: string;
+    name: string;
+    email: string;
+    password: string;
+    savedBooks: [string];
+    bookCount: number;
+  }
+  

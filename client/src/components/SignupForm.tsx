@@ -1,19 +1,22 @@
-import { useState } from 'react';
-import type { ChangeEvent, FormEvent } from 'react';
+//todos:	SignupForm.tsx: Replace the addUser() functionality imported from the API file with the ADD_USER mutation functionality.
+import { useState, type FormEvent, type ChangeEvent } from 'react';
+import Auth from '../utils/Auth';
+import { useMutation } from '@apollo/client';
+// import  User  from '../models/User';
+import { ADD_USER } from '../utils/mutations';
 import { Form, Button, Alert } from 'react-bootstrap';
 
-import { createUser } from '../utils/API';
-import Auth from '../utils/auth';
-import type { User } from '../models/User';
-
-// biome-ignore lint/correctness/noEmptyPattern: <explanation>
-const SignupForm = ({}: { handleModalClose: () => void }) => {
-  // set initial form state
-  const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [] });
+const SignupForm = ({}: any) => {
+     // set initial form state
+  const [userFormData, setUserFormData] = useState({ username: '', email: '', password: ''});
   // set state for form validation
   const [validated] = useState(false);
   // set state for alert
   const [showAlert, setShowAlert] = useState(false);
+
+  //todos: useMutation(addUser) instead of API-addUser
+  const [addUser] = useMutation(ADD_USER);
+
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -31,24 +34,20 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
     }
 
     try {
-      const response = await createUser(userFormData);
-
-      if (!response.ok) {
-        throw new Error('something went wrong!');
-      }
-
-      const { token } = await response.json();
-      Auth.login(token);
+      console.log("test: ", {variables: {...userFormData}});
+      const {data}= await addUser({variables: {...userFormData}});
+      console.log("Returned data: ", data);
+      // const { token } = await response.json();
+      Auth.login(data.addUser.token);
     } catch (err) {
       console.error(err);
-      setShowAlert(true);
+      // setShowAlert(true);
     }
 
     setUserFormData({
       username: '',
       email: '',
       password: '',
-      savedBooks: [],
     });
   };
 
@@ -111,3 +110,7 @@ const SignupForm = ({}: { handleModalClose: () => void }) => {
 };
 
 export default SignupForm;
+
+
+
+    

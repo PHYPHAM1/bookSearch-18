@@ -1,21 +1,52 @@
+// Import the ApolloServer class
 import express from 'express';
+import type { Request, Response } from 'express';
 import path from 'node:path';
+import { ApolloServer } from '@apollo/server';
+import { expressMiddleware } from '@apollo/server/express4'; //for apllo to connect w express
 import db from './config/connection.js';
-import routes from './routes/index.js';
+import { authenticateToken } from './services/auth.js';
+
+// Import the two parts of a GraphQL schema
+import { typeDefs, resolvers } from './schemas/index.js';
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers,
+  // introspection: true,
+});
+
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+// Create a new instance of an Apollo server with the GraphQL schema
+const startApolloServer = async () => {
 
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+  await server.start();
+  await db();
 
-// if we're in production, serve client/build as static assets
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, '../client/build')));
-}
+  const PORT = process.env.PORT || 3001;
+  
+  app.use(express.urlencoded({ extended: false }));
+  app.use(express.json());
 
-app.use(routes);
+  //todo: do i need this? MERN setup.. will need this later to serve the front end
+  //installed the lastest version of express, to fix the sendFile error
+  if (process.env.NODE_ENV === 'production') {
+     app.use(express.static(path.join(__dirname, '../client/dist')));
+    
+     app.get('*', (_req: Request, res: Response) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+    });
+  }
+  
+  //connecting graphql to express server  localhost:3001/graphql(this is the apollo sandbox)
+  app.use('/graphql', expressMiddleware(server as any, { context: authenticateToken as any})); 
 
-db.once('open', () => {
-  app.listen(PORT, () => console.log(`🌍 Now listening on localhost:${PORT}`));
-});
+  app.listen(PORT, () => {
+    console.log(`API server running on port ${PORT}!`);
+    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
+  });
+};
+
+// Call the async function to start the server
+startApolloServer();
