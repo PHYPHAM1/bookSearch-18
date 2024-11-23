@@ -3,13 +3,13 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import Auth from '../utils/Auth';
 import { useMutation} from '@apollo/client';
-import  User  from '../models/User';
+// import  User  from '../models/User';
 import { LOGIN_USER } from '../utils/mutations';
 import { Form, Button, Alert } from 'react-bootstrap';
 
 // biome-ignore lint/correctness/noEmptyPattern: <explanation>
 const LoginForm = ({}: { handleModalClose: () => void }) => {
-    const [userFormData, setUserFormData] = useState<User>({ username: '', email: '', password: '', savedBooks: [''] });
+    const [userFormData, setUserFormData] = useState({email: '', password: ''});
     const [validated] = useState(false);
     const [showAlert, setShowAlert] = useState(false);
 
@@ -36,7 +36,7 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
         const { data } = await loginUser({ variables: { ...userFormData } });
   
   
-        const { token } = data.loginUser;
+        const { token } = data.login;
         Auth.login(token);
       } catch (err) {
         console.error(err);
@@ -44,10 +44,8 @@ const LoginForm = ({}: { handleModalClose: () => void }) => {
       }
   
       setUserFormData({
-        username: '',
         email: '',
-        password: '',
-        savedBooks: [''],
+        password: ''
       });
     };
   

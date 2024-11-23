@@ -19,7 +19,7 @@ export const authenticateToken = ({ req } : { req: Request })=> {
   console.log("Incomiing Headers: ", token);
 
   if (req.headers.authorization) {
-    token = token.split(' ')[1];  // `Bearer ${token}`
+    token = token.split(' ').pop().trim();  // `Bearer ${token}`
   }
 
   if(!token || token == undefined) {
@@ -31,7 +31,8 @@ export const authenticateToken = ({ req } : { req: Request })=> {
   const secretKey: any = process.env.JWT_SECRET_KEY || '';
 
   try {
-    const { data }: any = jwt.verify(token, secretKey);
+    const data = jwt.verify(token, secretKey, { maxAge: '1h' });
+    console.log("\n data: ", data);
     req.user = data as JwtPayload
   } catch (error) {
     console.log("Error: ", error);

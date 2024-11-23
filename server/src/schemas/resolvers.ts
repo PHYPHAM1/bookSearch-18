@@ -25,19 +25,22 @@ const resolvers = {
         //TODOS: if user is authenticated, find and return user's info
         me: async (_parent: any, _args: any, context: any) => {
             if(context.user){
-                return User.findOne({_id: context.user.userId});
+                // console.log("\n hello", context);
+                return User.findOne({_id: context.user._id});
             }
             throw new Error
         }
     },
 //  Important for input types: With the arguments updated to accept the input types, we can now destructure the profileInput object from the args object.
     Mutation: { //creating/updating/deleting methods (post/update/delete)
-        savedBook: async (_parent: unknown, { bookInput }: {bookInput: addBookArgs}, context: any) => {
+        savedBook: async (_parent: unknown, { bookData }: {bookData: addBookArgs}, context: any) => {
+            console.log("bookInput", bookData);
             //We can now spread(spread operator) the profileInput object to the create method
+            // console.log(context)
             return await User.findByIdAndUpdate({
-                _id: context.user.userId
+                _id: context.user._id
             },{
-                $push: {savedBook: bookInput}
+                $push: {savedBooks: bookData}
             },{
                 new: true
             });
@@ -68,6 +71,7 @@ const resolvers = {
             const passwordmatch = await user?.isCorrectPassword(password)
             if(passwordmatch && user){
                 const token = signToken(user?.username, user?.email, user?._id)
+                // console.log("token", token);
                 return { token, user}
             }
             throw new Error

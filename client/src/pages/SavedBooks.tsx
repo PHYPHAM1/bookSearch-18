@@ -1,8 +1,8 @@
 // import { useState, type FormEvent } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useMutation, useQuery } from '@apollo/client';
-import {  QUERY_USER } from '../utils/queries';//QUERY_BOOK,
-import { SAVE_BOOK, REMOVE_BOOK } from '../utils/mutations';// ADD_USER, LOGIN_USER 
+import {  GET_ME, QUERY_USER } from '../utils/queries';//QUERY_BOOK,
+import { REMOVE_BOOK } from '../utils/mutations';// ADD_USER, LOGIN_USER SAVE_BOOK, 
 
 import Auth from '../utils/Auth';
 import { removeBookId } from '../utils/localStorage';
@@ -11,22 +11,22 @@ import { removeBookId } from '../utils/localStorage';
 
 const SavedBooks = () => {
     // const { bookId } = useParams();
-    const { loading, data} = useQuery(QUERY_USER);
+    const { loading, data} = useQuery(GET_ME);
     //todos: Remove the useEffect() hook that sets the state for UserData.Instead, 
     //todos: use the useQuery() hook to execute the GET_ME query on load and save it to a variable named userData.
     
-    const [savedBook] = useMutation(SAVE_BOOK);
+    // const [savedBook] = useMutation(SAVE_BOOK);
     const [removeBook] = useMutation(REMOVE_BOOK);
     
     //waiting for data from query_book to be available
-    const books = data?.books || [];
+    // const books = data?.books || [];
     if(loading){
         return <div>Loading...</div>;
     }
 
   
 
-  const userData = data || {};
+  const userData = data?.me || {};
   
 
 
@@ -66,14 +66,14 @@ const SavedBooks = () => {
       </div>
       <Container>
         <h2 className='pt-5'>
-          {userData.savedBooks.length
+          {userData.savedBooks?.length
             ? `Viewing ${userData.savedBooks.length} saved ${
                 userData.savedBooks.length === 1 ? 'book' : 'books'
               }:`
             : 'You have no saved books!'}
         </h2>
         <Row>
-          {userData.savedBooks.map((book: any) => {
+          {userData.savedBooks?.map((book: any) => {
             return (
               <Col md='4'>
                 <Card key={book.bookId} border='dark'>
