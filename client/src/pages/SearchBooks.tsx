@@ -9,12 +9,12 @@ import {
   Row
 } from 'react-bootstrap';
 
-import Auth from '../utils/Auth.js';
+import Auth from '../utils/Auth';
 import { useMutation } from '@apollo/client';
-import { SAVE_BOOK } from '../utils/mutations.js';
+import { SAVE_BOOK } from '../utils/mutations';
 
-import { saveBookIds, getSavedBookIds } from '../utils/localStorage.js';
-import type Book from '../models/Books.js';
+import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
+import type Book from '../models/Books';
 // import type { GoogleAPIBook } from '../models/GoogleAPIBook';
 
 const searchGoogleBooks = (query: string) => {
