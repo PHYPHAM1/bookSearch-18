@@ -1,5 +1,5 @@
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
 // import { REMOVE_BOOK } from '../utils/mutations';
 // import { removeBookId } from '../utils/localStorage';
@@ -87,7 +87,7 @@ const SavedBooks = () => {
                     <Card.Text>{book.description}</Card.Text>
                     <Button
                       className='btn-block btn-danger'
-                      onClick={() => handleDeleteBook(book.bookId)}
+                      // onClick={() => handleDeleteBook(book.bookId)}
                     >
                       Delete this Book!
                     </Button>
