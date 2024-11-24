@@ -1,9 +1,8 @@
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_ME } from '../utils/queries';
-import { REMOVE_BOOK } from '../utils/mutations';
-import Auth from '../utils/Auth';
-import { removeBookId } from '../utils/localStorage';
+// import { REMOVE_BOOK } from '../utils/mutations';
+// import { removeBookId } from '../utils/localStorage';
 
 
 
@@ -14,7 +13,7 @@ const SavedBooks = () => {
     //todos: use the useQuery() hook to execute the GET_ME query on load and save it to a variable named userData.
     
     // const [savedBook] = useMutation(SAVE_BOOK);
-    const [removeBook] = useMutation(REMOVE_BOOK);
+    // const [removeBook] = useMutation(REMOVE_BOOK);
     
     //waiting for data from query_book to be available
     // const books = data?.books || [];
@@ -30,25 +29,25 @@ const SavedBooks = () => {
 
 //todos: handleDeleteBook correct?
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
-  const handleDeleteBook = async (bookId: any) => {
-    const token = Auth.loggedIn() ? Auth.getToken() : null;
+  // const handleDeleteBook = async (bookId: any) => {
+    // const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-        if (!token) {
-          return false;
-        }
-        try {
-          await removeBook({variables: bookId});
+        // if (!token) {
+        //   return false;
+        // }
+        // try {
+        //   await removeBook({variables: bookId});
         
-        // upon success, remove book's id from localStorage
-        removeBookId(bookId);
-        } catch (err) {
-        console.error(err);
-        }
-        };
+        // // upon success, remove book's id from localStorage
+        // removeBookId(bookId);
+        // } catch (err) {
+        // console.error(err);
+        // }
+        // };
 
-        if(loading){
-            return <h2>Loading...</h2>;
-        }
+        // if(loading){
+        //     return <h2>Loading...</h2>;
+        // }
 
 
   return (
