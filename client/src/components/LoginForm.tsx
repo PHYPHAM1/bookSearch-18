@@ -1,7 +1,7 @@
 //todos: LoginForm.tsx: Replace the loginUser() functionality imported from the API file with the LOGIN_USER mutation functionality.
 
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-import Auth from '../utils/Auth';
+import Auth from '../utils/auth';
 import { useMutation} from '@apollo/client';
 // import  User  from '../models/User';
 import { LOGIN_USER } from '../utils/mutations';
