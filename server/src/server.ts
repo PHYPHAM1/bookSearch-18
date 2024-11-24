@@ -7,6 +7,7 @@ import { expressMiddleware } from '@apollo/server/express4'; //for apllo to conn
 import db from './config/connection.js';
 import { authenticateToken } from './services/auth.js';
 
+const __dirname = import.meta.dirname;
 // Import the two parts of a GraphQL schema
 import { typeDefs, resolvers } from './schemas/index.js';
 
