@@ -1,7 +1,7 @@
 export default interface Book {
     bookId: string;
     title: string;
-    author: string;
+    authors: string;
     description: string;
     image: string;
     link: string;
