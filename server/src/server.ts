@@ -33,10 +33,10 @@ const startApolloServer = async () => {
   //todo: do i need this? MERN setup.. will need this later to serve the front end
   //installed the lastest version of express, to fix the sendFile error
   if (process.env.NODE_ENV === 'production') {
-     app.use(express.static(path.join(__dirname, '../client/dist')));
+     app.use(express.static(path.join(__dirname, '../../client/dist')));
     
      app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+      res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
     });
   }
   
